@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Map</title>
+    <script src="./js/d3.js"></script>
+    <script src="./js/jquery-3.6.1.js"></script>
+    <script src="./js/math.js"></script>
+    <script type="text/javascript" src="./js/qinling.js"></script>
+    <script type="text/javascript" src="./js/bar_test.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="./js/FileSaver.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+
+<body onload="update_canvas()">
+    <!--<body onload="init()">-->
+    <!-- MAP AND TITLE -->
+
+    <div class="navbar">
+        <a  href="ql_map1.html">Section 1</a>
+        <div class="subnav">
+            <button class="subnavbtn">Section 2<i class="fa fa-caret-down"></i></button>
+            <div class="subnav-content">
+                <a href="ql_map2_1.html">Basic</a>
+                <a class ="active" href="ql_map2_2.html">Advanced</a>
+
+            </div>
+        </div>
+        <a  href="ql_map3.html">Section 3</a>
+    </div>
+    <div style="position: absolute; left: 40px; top: 60px;">
+<!--         
+        
+    <div style="position: absolute; left: 40px; top: 50px;"> -->
+        <hr id="header-line">
+        <div id="map-data"> <span id="update-time"></span> <br>
+            <br>
+            <span id="average-speed"></span><br>
+            <br>
+        </div>
+        <div id="legend"> <canvas id="legend1" width="80" height="20"></canvas>
+            1 km/h<br>
+            <br>
+            <canvas id="legend2" width="80" height="20"></canvas> 3 km/h<br>
+            <br>
+            <canvas id="legend3" width="80" height="20"></canvas> 5 km/h<br>
+            <br>
+            <canvas id="legend4" width="80" height="20"></canvas> 7 km/h<br>
+            <br>
+            <canvas id="legend5" width="80" height="20"></canvas> 10 km/h<br>
+            <br>
+            <canvas id="legend6" width="80" height="20"></canvas> 15 km/h<br>
+            <br>
+            <br>
+            <br>
+            <input id="unzoom" style="" onclick="doUnzoom()" value="Zoom Out" type="button">
+            <input id="Mode" style="" onclick="ShowMask()" value="Mode" type="button">
+            <input id="update" style="" onclick="update_canvas()" value="UPDATE" type="button">
+        </div>
+        <canvas id="display" width="1100" height="500" unselectable="on" class="unselectable"> If the map is missing, we
+            recommend the latest <a href="http://www.google.com/chrome">Chrome</a> browser.
+        </canvas> <canvas id="city-display" width="1100" height="500" unselectable="on" class="unselectable"></canvas>
+        <canvas id="image-canvas" width="1100" height="500" unselectable="on" class="unselectable"></canvas>
+
+        <div id="callout"></div>
+        <div id="test-svg"></div>
+        <div id="test-bar"></div>
+        <div id="mask-holder"> <img alt="mask" id="mask" src="./picture/qingling.png" unselectable="on"
+                class="unselectable"> </div>
+        <!--    <div id="map-heading"> <span id="title">wind map</span> </div>-->
+        <div id="wrapper">
+            <h1>WEATHER ON THE QINGLING MOUNTAIN - SECTION 2  </h1>
+
+            <p>
+                Select Date, time and type of the map below and click the update button.
+            </p>
+        </div>
+
+        <div id="test-data"> <span id="new-time"></span> <br></div>
+        <div id="speed_bar_data"> <span id="speed_bar"></span> <br> </div>
+        <div id="direction_bar_data"> <span id="direction_bar"></span> <br> </div>
+        <div  id="range-slide" class="row align-items-center"  style="margin-left: 400px;">
+            <div class="col-sm">
+                <div class="value"  style="margin-bottom:5px ;">0:00</div>
+                <input type="range" min="0" max="23" step="1" value="0" onchange="myFunctionBack()"  >
+            </div>
+        </div>
+        <div id="menu">
+            <!-- <p>Use the scroll to zoom on map</p> -->
+
+            <form action="javascript:evaluate()" method="post" class="myform" id="myform">
+
+
+                <div id="day" class="form-group">
+
+                    <select class="form-control" required>
+                        <!-- <option value="">Select Day</option> -->
+                        <option value="1"selected>2021-07-22</option>
+                        <option value="2">2021-07-23</option>
+                        <option value="3">2021-07-24</option>
+                        <option value="4">2021-07-25</option>
+                        <option value="5">2021-07-26</option>
+                        <option value="6">2021-07-27</option>
+                    </select>
+
+                </div>
+
+                <div id="time" class="form-group">
+
+                    <select class="form-control" required>
+                        <!-- <option value="">Select Time</option> -->
+                        <option value="1"selected>00:00:00</option>
+                        <option value="2">01:00:00</option>
+                        <option value="3">02:00:00</option>
+                        <option value="4">03:00:00</option>
+                        <option value="5">04:00:00</option>
+                        <option value="6">05:00:00</option>
+                        <option value="7">06:00:00</option>
+                        <option value="8">07:00:00</option>
+                        <option value="9">08:00:00</option>
+                        <option value="10">09:00:00</option>
+                        <option value="11">10:00:00</option>
+                        <option value="12">11:00:00</option>
+                        <option value="13">12:00:00</option>
+                        <option value="14">13:00:00</option>
+                        <option value="15">14:00:00</option>
+                        <option value="16">15:00:00</option>
+                        <option value="17">16:00:00</option>
+                        <option value="18">17:00:00</option>
+                        <option value="19">18:00:00</option>
+                        <option value="20">19:00:00</option>
+                        <option value="21">20:00:00</option>
+                        <option value="22">21:00:00</option>
+                        <option value="23">22:00:00</option>
+                        <option value="24">23:00:00</option>
+                    </select>
+
+                </div>
+                <div id="map" class="form-group">
+
+                    <select class="form-control" required>
+                        <!-- <option value="">Select region map </option> -->
+                        <option value="1"selected>Wind map</option>
+                        <option value="2">100m Wind map</option>
+                    </select>
+
+                </div>
+            </form>
+            <div id="result">
+
+            </div>
+
+        </div>
+    </div>
+    <!--<div id="test-svg"></div>-->
+    </script>
+    <script src="./js/jquery-3.6.1.js" type="application/javascript"></script>
+    <script src="./js/Section2_2.js" type="application/javascript"></script>
+    <script>
+        var field, range_change;
+        function update_canvas() {
+            test_updates();
+            function test_updates() {
+                $("#display").stop(true);
+                $("#city-display").stop(true);
+                $("#legend").stop(true);
+                $("#image-canvas").stop(true);
+                $("#unzoom").stop(true);
+                $("#mask").stop(true);
+                $("#callout").stop(true);
+                $("#range-slide").stop(true);
+                animate_stop = 1;
+            }
+            $(document).ready(function () {
+                let day = $('#day option:selected').val();
+                let time = $('#time option:selected').val();
+                let map = $('#map option:selected').val();
+                // if ((day) ==='' ||(time) ===''){
+                //     alert('Please select one day and time before choosing a point on the map.');
+                //     return false;
+                // };
+                if (day === "1") day = "20210722";
+                if (day === "2") day = "20210723";
+                if (day === "3") day = "20210724";
+                if (day === "4") day = "20210725";
+                if (day === "5") day = "20210726";
+                if (day === "6") day = "20210727";
+
+                if (time === "1") time = "00";
+                if (time === "2") time = "01";
+                if (time === "3") time = "02";
+                if (time === "4") time = "03";
+                if (time === "5") time = "04";
+                if (time === "6") time = "05";
+                if (time === "7") time = "06";
+                if (time === "8") time = "07";
+                if (time === "9") time = "08";
+                if (time === "10") time = "09";
+                if (time === "11") time = "10";
+                if (time === "12") time = "11";
+                if (time === "13") time = "12";
+                if (time === "14") time = "13";
+                if (time === "15") time = "14";
+                if (time === "16") time = "15";
+                if (time === "17") time = "16";
+                if (time === "18") time = "17";
+                if (time === "19") time = "18";
+                if (time === "20") time = "19";
+                if (time === "21") time = "20";
+                if (time === "22") time = "21";
+                if (time === "23") time = "22";
+                if (time === "24") time = "23";
+
+                if (range_change === 1) {
+                    let d = jQuery('.value').html();
+                    time = parseInt(d.slice(11, d.length), 10);
+                    if (time < 10) time = "0" + time;
+                    test_updates();
+                    // range_change = 0;
+                }
+
+                if (map === '') map = 'wind';
+                if (map === "1") map = 'wind';
+                if (map === "2") map = 'wind_100';
+                let weather_json_file_name1 = day + time + ".json"; //instantiate variable for reading file
+                let weather_json_file_path1 = "data_all/" + map + "/" + weather_json_file_name1
+                $.ajax({
+                    type: "get",
+                    url: weather_json_file_path1,
+                    dataType: "json",
+                    // data file path
+                    success: function (data) {
+                        windDataRaw = data;
+                        field = VectorField.read(windDataRaw, true);
+                        animate_stop = 0;
+                        test_updates();
+                        init();
+                    }
+                });
+            }
+            )
+        }
+    </script>
+</body>
+
+</html>

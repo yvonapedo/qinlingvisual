@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Map</title>
+    <script src="./js/d3.js"></script>
+    <script src="./js/jquery-3.6.1.js"></script>
+    <script src="./js/math.js"></script>
+    <script type="text/javascript" src="./js/qinling.js"></script>
+    <script type="text/javascript" src="./js/bar_test.js"></script>
+    <script src="./js/FileSaver.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a  href="ql_map1.html">Section 1</a>
+        <div class="subnav">
+            <button class="subnavbtn">Section 2<i class="fa fa-caret-down"></i></button>
+            <div class="subnav-content">
+                <a href="ql_map2_1.html">Basic</a>
+                <a href="ql_map2_2.html">Advanced</a>
+
+            </div>
+        </div>
+        <a class ="active" href="ql_map3.html">Section 3</a>
+    </div>
+    <!--<body onload="init()">-->
+    <!-- MAP AND TITLE -->
+    <div style="position: absolute; left: 40px; top: 60px;">
+
+        <div id="test-svg"></div>
+        <div id="test-bar"></div>
+        <div id="wind-uv"></div>
+        <div id="tem_rhu-bar1"></div>
+        <div id="wrapper">
+            <h1>WEATHER ON THE QINGLING MOUNTAIN</h1>
+            <hr id="header-line">
+            <p>
+                Select Date, time and type of the map below:
+            </p>
+        </div>
+
+        <div id="graph-title"> <span id="new-time"></span> <br> </div>
+
+        <div id="tem_bar_data"> <span id="tem_bar"></span> <br> </div>
+        <div id="hum_bar_data"> <span id="hum_bar"></span> <br> </div>
+        <div id="speed_bar_data"> <span id="speed_bar"></span> <br> </div>
+        <div id="direction_bar_data"> <span id="direction_bar"></span> <br> </div>
+        <div id="speed_u_bar_data"> <span id="speed_u_bar"></span> <br> </div>
+        <div id="speed_v_bar_data"> <span id="speed_v_bar"></span> <br> </div>
+
+        <div id="range-slide" class="row align-items-center" style="margin-left: 400px;">
+            <div class="col-sm">
+                <div class="value" style="margin-bottom:5px ;">0:00</div>
+                <input type="range" min="0" max="23" step="1" value="0" onchange="myFunctionBack()">
+            </div>
+        </div>
+        <div id="menu">
+            <!-- <p>Use the scroll to zoom on map</p> -->
+
+            <form action="javascript:evaluate()" method="post" class="myform" id="myform">
+
+
+                <div id="day" class="form-group">
+
+                    <select class="form-control" required>
+                        <!-- <option value="">Select Day</option> -->
+                        <option value="1"selected>2021-07-22</option>
+                        <option value="2">2021-07-23</option>
+                        <option value="3">2021-07-24</option>
+                        <option value="4">2021-07-25</option>
+                        <option value="5">2021-07-26</option>
+                        <option value="6">2021-07-27</option>
+                    </select>
+
+                </div>
+
+                <div id="time" class="form-group">
+
+                    <select class="form-control" required>
+                        <!-- <option value="">Select Time</option> -->
+                        <option value="1"selected>00:00:00</option>
+                        <option value="2">01:00:00</option>
+                        <option value="3">02:00:00</option>
+                        <option value="4">03:00:00</option>
+                        <option value="5">04:00:00</option>
+                        <option value="6">05:00:00</option>
+                        <option value="7">06:00:00</option>
+                        <option value="8">07:00:00</option>
+                        <option value="9">08:00:00</option>
+                        <option value="10">09:00:00</option>
+                        <option value="11">10:00:00</option>
+                        <option value="12">11:00:00</option>
+                        <option value="13">12:00:00</option>
+                        <option value="14">13:00:00</option>
+                        <option value="15">14:00:00</option>
+                        <option value="16">15:00:00</option>
+                        <option value="17">16:00:00</option>
+                        <option value="18">17:00:00</option>
+                        <option value="19">18:00:00</option>
+                        <option value="20">19:00:00</option>
+                        <option value="21">20:00:00</option>
+                        <option value="22">21:00:00</option>
+                        <option value="23">22:00:00</option>
+                        <option value="24">23:00:00</option>
+                    </select>
+
+                </div>
+
+                <div id="map" class="form-group">
+
+                    <select class="form-control" required>
+                        <!-- <option value="">Select region map </option> -->
+                        <option value="1"selected>Average Soil temperature map</option>
+                        <option value="2">Average Soil moisture map</option>
+
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <input name="temperature" id="temperature" placeholder="Average Soil temperature"
+                        class="form-control" type="text" size=25 height=80 required>
+                </div>
+                <div class="form-group">
+                    <input name="humanity" id="humanity" placeholder="Average Soil moisture" class="form-control"
+                        type="text" size=25 required>
+                </div>
+                <div class="form-group">
+                    <input name="5cm_Soil_temperature" id="5cm_Soil_temperature" placeholder="5cm Soil temperature" class="form-control"
+                           type="text" size=25 required>
+                </div>
+                <div class="form-group">
+                    <input name="10cm_Soil_temperature" id="10cm_Soil_temperature" placeholder="10cm Soil temperature" class="form-control" type="text"
+                           size=25 required>
+                </div>
+                <div class="form-group">
+                    <input name="40cm_Soil_temperature" id="40cm_Soil_temperature" placeholder="40cm Soil temperature"
+                           class="form-control" type="text" size=25 required>
+                </div>
+                <div class="form-group">
+                    <input name="200cm_Soil_temperature" id="200cm_Soil_temperature" placeholder="200cm Soil temperature"
+                           class="form-control" type="text" size=25 required>
+                </div>
+                <div class="form-group">
+                    <input name="5cm_Soil_humanity" id="5cm_Soil_humanity" placeholder="5cm Soil humanity" class="form-control"
+                           type="text" size=25 required>
+                </div>
+                <div class="form-group">
+                    <input name="10cm_Soil_humanity" id="10cm_Soil_humanity" placeholder="10cm Soil humanity" class="form-control" type="text"
+                           size=25 required>
+                </div>
+                <div class="form-group">
+                    <input name="40cm_Soil_humanity" id="40cm_Soil_humanity" placeholder="40cm Soil humanity"
+                           class="form-control" type="text" size=25 required>
+                </div>
+                <div class="form-group">
+                    <input name="200cm_Soil_humanity" id="200cm_Soil_humanity" placeholder="200cm Soil humanity"
+                           class="form-control" type="text" size=25 required>
+                </div>
+            </form>
+            <div id="result">
+
+            </div>
+
+        </div>
+    </div>
+    <!--<div id="test-svg"></div>-->
+    </script>
+    <script src="./js/jquery-3.6.1.js" type="application/javascript"></script>
+    <script src="./js/Section3.js" type="text/javascript"></script>
+    <script>
+        let add_bar_name_hum = "Soil moisture bar graph(%)";
+        let add_bar_name_tem = "Soil temperature bar graph(°C)";
+        document.getElementById('tem_bar').innerHTML =
+            '<span id="bar_graph">' + add_bar_name_tem + '<br></span>';
+        document.getElementById('hum_bar').innerHTML =
+            '<span id="bar_graph">' + add_bar_name_hum + '<br></span>';
+        // let add_bar_name_left = "Wind direction bar graph(degree)";
+        // let add_bar_name_right = "Wind Speed bar graph(km/h)";
+        // document.getElementById('speed_bar').innerHTML =
+        //     '<span id="bar_graph">' + add_bar_name_left + '<br></span>';
+        // document.getElementById('direction_bar').innerHTML =
+        //     '<span id="bar_graph">' + add_bar_name_right + '<br></span>';
+        // let add_u_name_left = "Meridional wind Speed bar graph(km/h)";
+        // let add_v_name_right = "Dimensional wind Speed bar graph(km/h)";
+        // document.getElementById('speed_u_bar').innerHTML =
+        //     '<span id="bar_graph">' + add_u_name_left + '<br></span>';
+        // document.getElementById('speed_v_bar').innerHTML =
+        //     '<span id="bar_graph">' + add_v_name_right + '<br></span>';
+
+    </script>
+</body>
+
+</html>
