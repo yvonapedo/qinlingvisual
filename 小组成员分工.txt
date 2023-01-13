@@ -1,0 +1,8 @@
+##小组成员
+2022202716 赖岚清
+2022280093 APEDO KOMI ETSE YVON
+2022280083 DATAGO ABDIREZAK MUNDINO 
+##分工情况
+APEDO KOMI ETSE YVON：开始主要负责Section1的工作，后参与代码的修改整合工作，负责version3，version4.3，文档方面主要负责第二节的撰写
+赖岚清：开始主要负责Section2的工作，后对Section1-Section3的代码进行首次整合，负责version1, version2, version4-4.2, version5.1，文档方面负责第三节的撰写，以及最后的完善汇总
+DATAGO ABDIREZAK MUNDINO ：开始主要负责Section3的工作，后参与代码的修改整合，负责version5，文档方面主要负责第一节的撰写
