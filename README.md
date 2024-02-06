@@ -1,3 +1,11 @@
+#### DATA VISUALIZATION
+#### TASK NAME: Assignment 3
+#### GROUP ID：7
+GROUP MEMBERS: 
+* 2022202716 赖岚清
+* 2022280093 APEDO KOMI ETSE YVON
+* 2022280083 DATAGO ABDIREZAK MUNDINO 
+
 #### Task
 ###将下面的所有指标进行可视化
 * tem ：气温（摄氏度）
